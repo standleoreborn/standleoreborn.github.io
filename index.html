@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STANDLEO:RE — покупка ключа</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  transition:
+    background-color .35s ease,
+    color .35s ease,
+    border-color .35s ease,
+    box-shadow .35s ease;
+}
+
+:root{
+  --accent:#4f8fff;
+  --accent2:#7aa7ff;
+  --bg:#020617;
+  --card:rgba(255,255,255,.14);
+  --border:rgba(255,255,255,.22);
+  --text:#ffffff;
+  --muted:#c7d2fe;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Inter,system-ui,sans-serif;
+  background:
+    radial-gradient(600px at 20% 10%,rgba(79,143,255,.45),transparent),
+    radial-gradient(800px at 80% 80%,rgba(122,167,255,.35),transparent),
+    linear-gradient(160deg,var(--bg),var(--bg));
+  color:var(--text);
+}
+
+.card{
+  position:relative;
+  width:100%;
+  max-width:400px;
+  padding:24px;
+  border-radius:28px;
+  background: rgba(2, 6, 23, 0.75);//background:var(--card);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  box-shadow:0 40px 80px rgba(0,0,0,.35);
+}
+
+.profile{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.avatar{
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  padding:2px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+  background:#fff;
+}
+
+.name{font-size:18px;font-weight:800}
+.subtitle{font-size:13px;color:var(--muted)}
+
+.warning{
+  background:rgba(255,80,80,.15);
+  border:1px solid rgba(255,80,80,.35);
+  border-radius:14px;
+  padding:12px;
+  font-size:13px;
+  color:#ffd6d6;
+  margin-bottom:18px;
+}
+
+.label{
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:10px;
+  display:block;
+}
+
+.licenses{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.license{
+  padding:14px;
+  border-radius:16px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.25);
+  color:var(--text);
+  cursor:pointer;
+  font-weight:700;
+  text-align:center;
+}
+
+.license small{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:500;
+}
+
+.license.active{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 12px 30px rgba(79,143,255,.5);
+}
+
+.price{
+  margin-top:18px;
+  padding:16px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(79,143,255,.25),rgba(122,167,255,.15));
+  display:flex;
+  justify-content:space-between;
+  font-weight:800;
+}
+
+.pay{
+  margin-top:22px;
+  width:100%;
+  padding:18px;
+  border-radius:20px;
+  border:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;
+  font-size:17px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 15px 40px rgba(79,143,255,.55);
+}
+
+.footer{
+  margin-top:14px;
+  font-size:12px;
+  text-align:center;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="profile">
+    <div class="avatar"><img src="avatar.jpg"></div>
+    <div>
+      <div class="name">STANDLEO:RE</div>
+      <div class="subtitle">Официальная покупка ключа</div>
+    </div>
+  </div>
+
+  <div class="warning">⚠️ Оплата производится добровольно, возврат невозможен</div>
+
+  <span class="label">Срок лицензии</span>
+  <div class="licenses">
+    <div class="license active" data-value="forever" onclick="selectLicense(this,150)">
+      Навсегда
+      <small>150 ₽</small>
+    </div>
+    <div class="license" data-value="30" onclick="selectLicense(this,100)">
+      30 дней
+      <small>100 ₽</small>
+    </div>
+    <div class="license" data-value="15" onclick="selectLicense(this,75)">
+      15 дней
+      <small>75 ₽</small>
+    </div>
+    <div class="license" data-value="7" onclick="selectLicense(this,50)">
+      7 дней
+      <small>50 ₽</small>
+    </div>
+  </div>
+
+  <div class="price">
+    <span>Итого</span>
+    <span id="priceValue">150 ₽</span>
+  </div>
+
+  <button class="pay" onclick="buyKey()">🚀 Приобрести ключ</button>
+
+  <div class="footer">Для любых вопросов в t.me/@</div>
+</div>
+
+<script>
+let current='forever'
+let price=150
+
+function selectLicense(el,p){
+  document.querySelectorAll('.license').forEach(l=>l.classList.remove('active'))
+  el.classList.add('active')
+  current=el.dataset.value
+  price=p
+  priceValue.textContent=p+' ₽'
+}
+
+function buyKey(){
+  const text=current==='forever'
+    ?`Здравствуйте, хочу ключ навсегда за ${price}₽`
+    :`Здравствуйте, хочу ключ на ${current} дней за ${price}₽`
+  window.open(`https://t.me/orcalelaorcala_bot?text=${encodeURIComponent(text)}`)
+}
+</script>
+
+</body>
+</html>
